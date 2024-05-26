@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import type { TodoItem } from '../types/app';
 
-export function createTodoStore(initialItems: TodoItem[]) {
+export function createTodoStore(initialItems: Omit<TodoItem, 'id'>[]) {
   let uid = 1;
 
   const todos = initialItems.map(({ done, label }) => ({
@@ -11,7 +11,7 @@ export function createTodoStore(initialItems: TodoItem[]) {
   })
   );
 
-  const { subscribe, update } = writable(todos);
+  const { subscribe, update } = writable<TodoItem[]>(todos);
 
   return {
     subscribe,
@@ -35,3 +35,6 @@ export function createTodoStore(initialItems: TodoItem[]) {
     }
   };
 }
+
+
+export type TodoStore = typeof createTodoStore;
